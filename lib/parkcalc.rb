@@ -1,14 +1,26 @@
+# -*- coding: utf-8 -*-
 class ParkCalcPage
 
   @@lotIdentifier = 'ParkingLot'
   @@startingPrefix = 'Starting'
   @@leavingPrefix = 'Leaving'
-  @@dateTemplate = '%sDate'
-  @@timeTemplate = '%sTime'
+  @@dateTemplate = "%sDate"
+  @@timeTemplate = "%sTime"
   @@amPMRadioButtonTemplate = "//input[@name='%sTimeAMPM' and @value='%s']"
 
+  @@calculateButtonIdentifier = 'Submit'
+  @@costElementLocation = "//tr[td/div[@class='SubHead'] = 'estimated Parking costs']/td/span/b"
+  
   @@durationMap = {
-    '30 minutes' => ['05/04/2010', '12:00', 'AM', '05/04/2010', '12:30', 'AM']
+    '30 minutes' => ['05/04/2010', '12:00', 'AM', '05/04/2010', '12:30', 'AM'],
+    '3 hours' => ['05/04/2010', '12:00', 'AM', '05/04/2010', '03:00', 'AM'],
+    '5 hours' => ['05/04/2010', '12:00', 'AM', '05/04/2010', '05:00', 'AM'],
+    '5 hours 1 minute' => ['05/04/2010', '12:00', 'AM', '05/04/2010', '05:01', 'AM'],
+    '12 hours' => ['05/04/2010', '12:00', 'AM', '05/04/2010', '12:00', 'PM'],
+    '24 hours' => ['05/04/2010', '12:00', 'AM', '05/05/2010', '12:00', 'AM'],
+    '1 day 1 minute' => ['05/04/2010', '12:00', 'AM', '05/05/2010', '12:01', 'AM'],
+    '3 days' => ['05/04/2010', '12:00', 'AM', '05/07/2010', '12:00', 'AM'],
+    '1 week' => ['05/04/2010', '12:00', 'AM', '05/11/2010', '12:00', 'AM'],
   }
 
   attr :page
@@ -35,11 +47,17 @@ class ParkCalcPage
   end
 
   def parking_costs
-    @page.click 'Submit'
-    @page.wait_for_page_to_load 10000
-    cost_element = @page.get_text "//tr[td/div[@class='SubHead'] = 'estimated Parking costs']/td/span/b"
-    return cost_element
+    calculate_parking_costs
+    get_parking_costs_from_page
   end
 
+  def calculate_parking_costs
+    @page.click @@calculateButtonIdentifier
+    @page.wait_for_page_to_load 10000
+  end
+
+  def get_parking_costs_from_page
+    @page.get_text @@costElementLocation
+  end
 end
 
