@@ -1,11 +1,9 @@
-When /^I park my car in the Valet Parking Lot for (.*)$/ do |duration|
-  $parkcalc.select('Valet Parking')
+When /^I park my car in the (.*) Lot for (.*)$/ do | parking_lot, duration |
+  $parkcalc.select(parking_lot)
   $parkcalc.enter_parking_duration(duration)
-  pending
 end
 
-Then /^I will have to pay (.*)$/ do |price|
+Then /^I will have to pay (.*)$/ do | price |
   $parkcalc.parking_costs.should == price
-  pending
 end
 
