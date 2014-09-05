@@ -2,7 +2,7 @@ require 'rubygems'
 gem 'selenium-client'
 require 'selenium/client'
 require 'rspec/expectations'
-require './lib/parkcalc'
+require File.join(File.dirname(__FILE__), '..', '/lib/parkcalc.rb')
 
 #before all
 selenium_driver = Selenium::Client::Driver.new \
